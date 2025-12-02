@@ -1,5 +1,2 @@
-﻿  main.cpp
-C:\Users\kim03\OneDrive\바탕 화면\Damagochi\Damagochi\main.cpp(72,21): warning C4566: 유니버설 문자 이름 '\U0001F31F'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-C:\Users\kim03\OneDrive\바탕 화면\Damagochi\Damagochi\main.cpp(72,72): warning C4566: 유니버설 문자 이름 '\U0001F31F'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-C:\Users\kim03\OneDrive\바탕 화면\Damagochi\Damagochi\main.cpp(99,57): warning C4566: 유니버설 문자 이름 '\U0001F389'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-  Damagochi.vcxproj -> C:\Users\kim03\OneDrive\바탕 화면\Damagochi\x64\Debug\Damagochi.exe
+﻿  monster.cpp
+  Damagochi.vcxproj -> C:\Users\k\Desktop\Damagochi\x64\Debug\Damagochi.exe

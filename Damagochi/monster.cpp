@@ -17,6 +17,16 @@ monster::monster(string tamagochi) { //기본 상태 수치
 
 void monster::gainExp(int amount) {
 	exp += amount;
+	if (exp >= 100) {
+		exp = 100;
+	}
+	
+	if (amount <= 5) {
+		cout << name << "이(가) 놀던 도중 놀이를 그만하였습니다! " << endl;
+	}
+	else {
+		cout << name << "이(가) 열심히 놀았습니다! " << endl;
+	}
 	cout << name << "이(가) 경험치 +" << amount << "를 획득했습니다! (총 EXP: " << exp << ")" << endl;
 }
 
@@ -32,8 +42,8 @@ void monster::feed() { //배고픔 선택시 배고픔 상승
 	const int persentage = 50; 
 	int decreaseClean = rand() % 100; 
 	if(decreaseClean < persentage) {
-		cleaner -= 5;
-		cout << "[알림] " << name << "이(가) 밥을 먹다가 더러워졌습니다! [청결도 5 감소]" << endl;
+		cleaner -= 10;
+		cout << "[!랜덤이벤트!] " << name << "이(가) 밥을 먹다가 더러워졌습니다! [건강 10 감소]" << endl;
 	}
 
 	//화면 출력 확인
@@ -42,11 +52,17 @@ void monster::feed() { //배고픔 선택시 배고픔 상승
 }
 
 void monster::clean() { //건강 상승
-
 	cout << name << "깨끗하게 씻었습니다. [건강 10상승]" << endl;
 	cleaner += 10;
 	if(cleaner >=100){
 		cleaner = 100;
+	}
+
+	const int persentage = 2;
+	int decreaseClean = rand() % 100;
+	if (decreaseClean <= persentage) {
+		cleaner -= 100;
+		cout << "[!랜덤이벤트!] " << name << "이(가) 씻다가 넘어져 머리를 부딪혔습니다![사망]" << endl;
 	}
 
 	cout << "\n(메인 메뉴로 돌아가려면 Enter 키를 누르세요...)";
@@ -61,11 +77,12 @@ void monster::play() { //재미 상승
 	const int persentage = 50;
 	int decreaseClean = rand() % 100;
 	if (decreaseClean < persentage) {
-		cleaner -= 5;
-		cout << "[알림] " << name << "이(가) 뛰어다니다가 넘어졌습니다! [건강 5 감소]" << endl;
+		cleaner -= 15;
+		cout << "[!랜덤이벤트!] " << name << "이(가) 뛰어다니다가 넘어졌습니다! [건강 15 감소]" << endl;
 	}
 
-	int expGained = rand() % 11 + 10;
+	int expGained = rand() % 10 + 1;
+
 	gainExp(expGained);
 
 	if (funny >= 100) {
@@ -77,6 +94,7 @@ void monster::play() { //재미 상승
 }
 
 void monster::status(){ //모든 상태 표시
+	cout << " ★ 상태가 0일시 사망 ★ " << endl;
 	cout << "---[" << name << "] 현재 상태 ---" << endl;
 	cout << "  건강  : " << cleaner << "/100" << endl; //건강 0 죽음 -> 
 	cout << "  배고픔: " << hungry << "/100" << endl; // 배고픔 0죽음
@@ -86,10 +104,7 @@ void monster::status(){ //모든 상태 표시
 
 void monster::DecreaseStatus() {
 
-	const int MIN_DECREASE = 3;
-	const int MAX_DECREASE = 7;
-	int decreaseAmount = rand() % (MAX_DECREASE - MIN_DECREASE + 1) + MIN_DECREASE;
-
+	int decreaseAmount = rand() % 10 + 5;
 	int eventChoice = rand() % 3;
 	switch (eventChoice) {
 	case 0: // 첫 번째: 배고픔 수치 감소
@@ -108,7 +123,6 @@ void monster::DecreaseStatus() {
 		break;
 	}
 
-
 	if (hungry < 0) hungry = 0;
 	if (cleaner < 0) cleaner = 0;
 	if (funny < 0) funny = 0;
@@ -120,3 +134,4 @@ bool monster::IsDead() {
 	}
 	return false;
 }
+

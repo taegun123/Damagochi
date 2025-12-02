@@ -69,7 +69,7 @@ void GameLoop(monster* pet) {
 
         if (pet->exp >= EVOLUTION_EXP_THRESHOLD && pet->level == 1) {
 
-            cout << "\n🌟🌟🌟 축하합니다! " << pet->name << "이(가) 진화합니다! 🌟🌟🌟" << endl;
+            cout << "\n 축하합니다! " << pet->name << "이(가) 진화합니다! " << endl;
             system("pause");
 
             string newName = pet->name; // 기존 이름 유지
