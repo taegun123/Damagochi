@@ -111,9 +111,9 @@ void GameLoop(monster* pet) {
         pet->status();
 
         cout << "\n--- 행동 메뉴 ---" << endl;
-        cout << "1. 밥 주기 " << endl;
-        cout << "2. 놀아주기 " << endl;
-        cout << "3. 씻겨주기" << endl;
+        cout << "1. 밥 주기 [배고픔 상승] " << endl;
+        cout << "2. 놀아주기 [재미 상승] " << endl;
+        cout << "3. 씻겨주기 [건강 상승]" << endl;
         cout << "4. 종료 (Exit)" << endl;
         cout << "-----------------" << endl;
         cout << "메뉴를 선택하세요: ";

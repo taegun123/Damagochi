@@ -1,2 +1,5 @@
-﻿  monster.cpp
-  Damagochi.vcxproj -> C:\Users\k\Desktop\Damagochi\x64\Debug\Damagochi.exe
+﻿  main.cpp
+C:\Users\k\Desktop\Damagochi-main\Damagochi\main.cpp(99,57): warning C4566: 유니버설 문자 이름 '\U0001F389'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
+  monster.cpp
+  코드를 생성하고 있습니다...
+  Damagochi.vcxproj -> C:\Users\k\Desktop\Damagochi-main\x64\Debug\Damagochi.exe
