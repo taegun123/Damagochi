@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <windows.h>
 #include "monster.h"
+#include "game.h"
 using namespace std;
 
 monster::monster(string tamagochi) { //기본 상태 수치
@@ -20,13 +21,7 @@ void monster::gainExp(int amount) {
 	if (exp >= 100) {
 		exp = 100;
 	}
-	
-	if (amount <= 5) {
-		cout << name << "이(가) 놀던 도중 놀이를 그만하였습니다! " << endl;
-	}
-	else {
-		cout << name << "이(가) 열심히 놀았습니다! " << endl;
-	}
+
 	cout << name << "이(가) 경험치 +" << amount << "를 획득했습니다! (총 EXP: " << exp << ")" << endl;
 }
 
@@ -70,9 +65,18 @@ void monster::clean() { //건강 상승
 }
 
 void monster::play() { //재미 상승
-	cout << name << "신나게 놉니다! 지루함이 줄었습니다. [재미 15상승]" << endl;
-	funny += 15;
-	hungry -= 5; //놀이 후 배고픔 증가
+	system("cls");
+	cout << name << "이(가) 미니 게임을 시작합니다!" << endl;
+
+	if (gameResult) {
+		cout << "게임에 성공하여 재미가 상승했습니다! [재미 15 상승]" << endl;
+		funny += 15;
+		int expGained = rand() % 10 + 1;
+		gainExp(expGained);
+	}
+	else {
+		cout << "게임에 실패하여 재미에 변화가 없습니다." << endl;
+	}
 
 	const int persentage = 50;
 	int decreaseClean = rand() % 100;
@@ -80,10 +84,6 @@ void monster::play() { //재미 상승
 		cleaner -= 15;
 		cout << "[!랜덤이벤트!] " << name << "이(가) 뛰어다니다가 넘어졌습니다! [건강 15 감소]" << endl;
 	}
-
-	int expGained = rand() % 10 + 1;
-
-	gainExp(expGained);
 
 	if (funny >= 100) {
 		funny = 100;
