@@ -1,11 +1,59 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <cstdlib>
 #include <windows.h>
 #include "monster.h"
 #include "game.h"
 using namespace std;
 
-monster::monster(string tamagochi) { //±âº» »óÅÂ ¼öÄ¡
+const string HAPPY_ART = R"(
+â– â– â– â– â– â– â– â– 
+â– â–¡â–¡â–¡â–¡â–¡â–¡â– 
+â– â–¡â˜…â–¡â–¡â˜…â–¡â– 
+â– â–¡â–¡â–¡â–¡â–¡â–¡â– 
+â– â–¡â– â–¡â–¡â– â–¡â– 
+â– â–¡â–¡â– â– â–¡â–¡â– 
+  â– â–¡â–¡â–¡â–¡â– 
+    â– â– â– â– 
+)";
+
+const string NORMAL_ART = R"(
+â– â– â– â– â– â– â– â– 
+â– â–¡â–¡â–¡â–¡â–¡â–¡â– 
+â– â–¡â—â–¡â–¡â—â–¡â– 
+â– â–¡â–¡â–¡â–¡â–¡â–¡â– 
+â– â–¡â–¡â–¡â–¡â–¡â–¡â– 
+â– â–¡â–¡â– â– â–¡â–¡â– 
+  â– â–¡â–¡â–¡â–¡â– 
+    â– â– â– â– 
+)";
+
+const string SAD_ART = R"(
+â– â– â– â– â– â– â– â– 
+â– â–¡â–¡â–¡â–¡â–¡â–¡â– 
+â– â–¡ã€“â–¡â–¡ã€“â–¡â– 
+â– â–¡â–¡â–¡â–¡â–¡â–¡â– 
+â– â–¡â–¡â– â– â–¡â–¡â– 
+â– â–¡â– â–¡â–¡â– â–¡â– 
+  â– â–¡â–¡â–¡â–¡â– 
+    â– â– â– â– 
+)";
+
+void monster::UpdateMood() {
+	// ì„¸ ê°€ì§€ ìˆ˜ì¹˜ ì¤‘ í•˜ë‚˜ë¼ë„ 30 ì´í•˜ì´ë©´ ìŠ¬í”” ìƒíƒœ (SAD)
+	if (hungry <= 30 || funny <= 30 || cleaner <= 30) {
+		currentMood = SAD;
+	}
+	// ì„¸ ê°€ì§€ ìˆ˜ì¹˜ ëª¨ë‘ 80 ì´ìƒì´ë©´ ê¸°ì¨ ìƒíƒœ (HAPPY)
+	else if (hungry >= 80 && funny >= 80 && cleaner >= 80) {
+		currentMood = HAPPY;
+	}
+	// ê·¸ ì™¸ì˜ ê²½ìš° (ì¤‘ê°„ ìƒíƒœ)ëŠ” ë³´í†µ ìƒíƒœ (NORMAL)
+	else {
+		currentMood = NORMAL;
+	}
+}
+
+monster::monster(string tamagochi) { //ê¸°ë³¸ ìƒíƒœ ìˆ˜ì¹˜
 	name = tamagochi;
 	hungry = 20;
 	cleaner = 20;
@@ -13,7 +61,7 @@ monster::monster(string tamagochi) { //±âº» »óÅÂ ¼öÄ¡
 	exp = 0;
 	level = 1;
 
-	cout << name << " (ÀÌ)°¡ ÅÂ¾î³µ½À´Ï´Ù! " << endl;
+	cout << name << " (ì´)ê°€ íƒœì–´ë‚¬ìŠµë‹ˆë‹¤! " << endl;
 }
 
 void monster::gainExp(int amount) {
@@ -22,32 +70,32 @@ void monster::gainExp(int amount) {
 		exp = 100;
 	}
 
-	cout << name << "ÀÌ(°¡) °æÇèÄ¡ +" << amount << "¸¦ È¹µæÇß½À´Ï´Ù! (ÃÑ EXP: " << exp << ")" << endl;
+	cout << name << "ì´(ê°€) ê²½í—˜ì¹˜ +" << amount << "ë¥¼ íšë“í–ˆìŠµë‹ˆë‹¤! (ì´ EXP: " << exp << ")" << endl;
 }
 
-void monster::feed() { //¹è°íÇÄ ¼±ÅÃ½Ã ¹è°íÇÄ »ó½Â
+void monster::feed() { //ë°°ê³ í”” ì„ íƒì‹œ ë°°ê³ í”” ìƒìŠ¹
 
-	cout << name << "ÀÌ ¹äÀ» ¸Ô¾ú½À´Ï´Ù. [¹è°íÇÄ 10 »ó½Â]" << endl; 
+	cout << name << "ì´ ë°¥ì„ ë¨¹ì—ˆìŠµë‹ˆë‹¤. [ë°°ê³ í”” 10 ìƒìŠ¹]" << endl; 
 	hungry += 10;
 	if (hungry >= 100) {
 		hungry = 100;
 	}
 
-	//·£´ı Ã»°áµµ °¨¼Ò
+	//ëœë¤ ì²­ê²°ë„ ê°ì†Œ
 	const int persentage = 50; 
 	int decreaseClean = rand() % 100; 
 	if(decreaseClean < persentage) {
 		cleaner -= 10;
-		cout << "[!·£´ıÀÌº¥Æ®!] " << name << "ÀÌ(°¡) ¹äÀ» ¸Ô´Ù°¡ ´õ·¯¿öÁ³½À´Ï´Ù! [°Ç°­ 10 °¨¼Ò]" << endl;
+		cout << "[!ëœë¤ì´ë²¤íŠ¸!] " << name << "ì´(ê°€) ë°¥ì„ ë¨¹ë‹¤ê°€ ë”ëŸ¬ì›Œì¡ŒìŠµë‹ˆë‹¤! [ê±´ê°• 10 ê°ì†Œ]" << endl;
 	}
 
-	//È­¸é Ãâ·Â È®ÀÎ
-	cout << "\n(¸ŞÀÎ ¸Ş´º·Î µ¹¾Æ°¡·Á¸é Enter Å°¸¦ ´©¸£¼¼¿ä...)";
+	//í™”ë©´ ì¶œë ¥ í™•ì¸
+	cout << "\n(ë©”ì¸ ë©”ë‰´ë¡œ ëŒì•„ê°€ë ¤ë©´ Enter í‚¤ë¥¼ ëˆ„ë¥´ì„¸ìš”...)";
 	system("pause");
 }
 
-void monster::clean() { //°Ç°­ »ó½Â
-	cout << name << "±ú²ıÇÏ°Ô ¾Ä¾ú½À´Ï´Ù. [°Ç°­ 10»ó½Â]" << endl;
+void monster::clean() { //ê±´ê°• ìƒìŠ¹
+	cout << name << "ê¹¨ë—í•˜ê²Œ ì”»ì—ˆìŠµë‹ˆë‹¤. [ê±´ê°• 10ìƒìŠ¹]" << endl;
 	cleaner += 10;
 	if(cleaner >=100){
 		cleaner = 100;
@@ -57,49 +105,65 @@ void monster::clean() { //°Ç°­ »ó½Â
 	int decreaseClean = rand() % 100;
 	if (decreaseClean <= persentage) {
 		cleaner -= 100;
-		cout << "[!·£´ıÀÌº¥Æ®!] " << name << "ÀÌ(°¡) ¾Ä´Ù°¡ ³Ñ¾îÁ® ¸Ó¸®¸¦ ºÎµúÇû½À´Ï´Ù![»ç¸Á]" << endl;
+		cout << "[!ëœë¤ì´ë²¤íŠ¸!] " << name << "ì´(ê°€) ì”»ë‹¤ê°€ ë„˜ì–´ì ¸ ë¨¸ë¦¬ë¥¼ ë¶€ë”ªí˜”ìŠµë‹ˆë‹¤![ì‚¬ë§]" << endl;
 	}
 
-	cout << "\n(¸ŞÀÎ ¸Ş´º·Î µ¹¾Æ°¡·Á¸é Enter Å°¸¦ ´©¸£¼¼¿ä...)";
+	cout << "\n(ë©”ì¸ ë©”ë‰´ë¡œ ëŒì•„ê°€ë ¤ë©´ Enter í‚¤ë¥¼ ëˆ„ë¥´ì„¸ìš”...)";
 	system("pause");
 }
 
-void monster::play() { //Àç¹Ì »ó½Â
+void monster::play() { //ì¬ë¯¸ ìƒìŠ¹
 	system("cls");
-	cout << name << "ÀÌ(°¡) ¹Ì´Ï °ÔÀÓÀ» ½ÃÀÛÇÕ´Ï´Ù!" << endl;
+	cout << name << "ì´(ê°€) ë¯¸ë‹ˆ ê²Œì„ì„ ì‹œì‘í•©ë‹ˆë‹¤!" << endl;
+
+	Game miniGame;
+	bool gameResult = miniGame.startMiniGame();
 
 	if (gameResult) {
-		cout << "°ÔÀÓ¿¡ ¼º°øÇÏ¿© Àç¹Ì°¡ »ó½ÂÇß½À´Ï´Ù! [Àç¹Ì 15 »ó½Â]" << endl;
+		cout << "\nê²Œì„ì— ì„±ê³µí•˜ì—¬ ì¬ë¯¸ê°€ ìƒìŠ¹í–ˆìŠµë‹ˆë‹¤! [ì¬ë¯¸ 15 ìƒìŠ¹]" << endl;
 		funny += 15;
 		int expGained = rand() % 10 + 1;
 		gainExp(expGained);
 	}
 	else {
-		cout << "°ÔÀÓ¿¡ ½ÇÆĞÇÏ¿© Àç¹Ì¿¡ º¯È­°¡ ¾ø½À´Ï´Ù." << endl;
+		cout << "\nê²Œì„ì— ì‹¤íŒ¨í•˜ì—¬ ì¬ë¯¸ì— ë³€í™”ê°€ ì—†ìŠµë‹ˆë‹¤." << endl;
 	}
 
 	const int persentage = 50;
 	int decreaseClean = rand() % 100;
 	if (decreaseClean < persentage) {
 		cleaner -= 15;
-		cout << "[!·£´ıÀÌº¥Æ®!] " << name << "ÀÌ(°¡) ¶Ù¾î´Ù´Ï´Ù°¡ ³Ñ¾îÁ³½À´Ï´Ù! [°Ç°­ 15 °¨¼Ò]" << endl;
+		cout << "[!ëœë¤ì´ë²¤íŠ¸!] " << name << "ì´(ê°€) ë›°ì–´ë‹¤ë‹ˆë‹¤ê°€ ë„˜ì–´ì¡ŒìŠµë‹ˆë‹¤! [ê±´ê°• 15 ê°ì†Œ]" << endl;
 	}
 
 	if (funny >= 100) {
 		funny = 100;
 	}
 
-	cout << "\n(¸ŞÀÎ ¸Ş´º·Î µ¹¾Æ°¡·Á¸é Enter Å°¸¦ ´©¸£¼¼¿ä...)";
+	cout << "\n(ë©”ì¸ ë©”ë‰´ë¡œ ëŒì•„ê°€ë ¤ë©´ Enter í‚¤ë¥¼ ëˆ„ë¥´ì„¸ìš”...)";
 	system("pause");
 }
 
-void monster::status(){ //¸ğµç »óÅÂ Ç¥½Ã
-	cout << " ¡Ú »óÅÂ°¡ 0ÀÏ½Ã »ç¸Á ¡Ú " << endl;
-	cout << "---[" << name << "] ÇöÀç »óÅÂ ---" << endl;
-	cout << "  °Ç°­  : " << cleaner << "/100" << endl; //°Ç°­ 0 Á×À½ -> 
-	cout << "  ¹è°íÇÄ: " << hungry << "/100" << endl; // ¹è°íÇÄ 0Á×À½
-	cout << "  Àç¹Ì: " << funny << "/100" << endl; //Àç¹Ì 0Á×À½
-	cout << "  °æÇèÄ¡: " << exp << "/100[°æÇèÄ¡ 100ÀÏ½Ã ÁøÈ­]" << " " <<  "·¹º§ : " << level << endl;
+void monster::status(){ //ëª¨ë“  ìƒíƒœ í‘œì‹œ
+	UpdateMood(); // â¬…ï¸ ìƒíƒœ ì¶œë ¥ ì „ ê°ì • ì—…ë°ì´íŠ¸
+
+	// â¬…ï¸ ê°ì • ìƒíƒœì— ë”°ë¥¸ ì•„ìŠ¤í‚¤ ì•„íŠ¸ ì¶œë ¥
+	if (currentMood == HAPPY) {
+		cout << HAPPY_ART << endl;
+	}
+	else if (currentMood == NORMAL) {
+		cout << NORMAL_ART << endl;
+	}
+	else {
+		cout << SAD_ART << endl;
+	}
+	cout << "-------------------------" << endl;
+	cout << "  ì£¼ì˜ ì‚¬í•­ : ìƒíƒœê°€ 0ì¼ì‹œ ì‚¬ë§  " << endl;
+	cout << "---[" << name << "] í˜„ì¬ ìƒíƒœ ---" << endl;
+	cout << "  ê±´ê°•  : " << cleaner << "/100" << endl; //ê±´ê°• 0 ì£½ìŒ -> 
+	cout << "  ë°°ê³ í””: " << hungry << "/100" << endl; // ë°°ê³ í”” 0ì£½ìŒ
+	cout << "  ì¬ë¯¸: " << funny << "/100" << endl; //ì¬ë¯¸ 0ì£½ìŒ
+	cout << "  ê²½í—˜ì¹˜: " << exp << "/100[ê²½í—˜ì¹˜ 100ì¼ì‹œ ì§„í™”]" << " " <<  "ë ˆë²¨ : " << level << endl;
 }
 
 void monster::DecreaseStatus() {
@@ -107,19 +171,19 @@ void monster::DecreaseStatus() {
 	int decreaseAmount = rand() % 10 + 5;
 	int eventChoice = rand() % 3;
 	switch (eventChoice) {
-	case 0: // Ã¹ ¹øÂ°: ¹è°íÇÄ ¼öÄ¡ °¨¼Ò
+	case 0: // ì²« ë²ˆì§¸: ë°°ê³ í”” ìˆ˜ì¹˜ ê°ì†Œ
 		hungry -= decreaseAmount;
-		cout << "[¾Ë¸²] " << name << "ÀÌ(°¡) ¹è°¡ °íÆÄÁ³½À´Ï´Ù! [¹è°íÇÄ " << decreaseAmount << " °¨¼Ò]" << endl;
+		cout << "[ì•Œë¦¼] " << name << "ì´(ê°€) ë°°ê°€ ê³ íŒŒì¡ŒìŠµë‹ˆë‹¤! [ë°°ê³ í”” " << decreaseAmount << " ê°ì†Œ]" << endl;
 		break;
 
-	case 1: // µÎ ¹øÂ°: Àç¹Ì ¼öÄ¡ °¨¼Ò
+	case 1: // ë‘ ë²ˆì§¸: ì¬ë¯¸ ìˆ˜ì¹˜ ê°ì†Œ
 		funny -= decreaseAmount;
-		cout << "[¾Ë¸²] " << name << "ÀÌ(°¡) Áö·çÇØÁ³½À´Ï´Ù! [Àç¹Ì " << decreaseAmount << " °¨¼Ò]" << endl;
+		cout << "[ì•Œë¦¼] " << name << "ì´(ê°€) ì§€ë£¨í•´ì¡ŒìŠµë‹ˆë‹¤! [ì¬ë¯¸ " << decreaseAmount << " ê°ì†Œ]" << endl;
 		break;
 
-	case 2: // ¼¼ ¹øÂ°: Ã»°áµµ ¼öÄ¡ °¨¼Ò
+	case 2: // ì„¸ ë²ˆì§¸: ì²­ê²°ë„ ìˆ˜ì¹˜ ê°ì†Œ
 		cleaner -= decreaseAmount;
-		cout << "[¾Ë¸²] " << name << "ÀÌ(°¡) ´õ·¯¿öÁ³½À´Ï´Ù! [°Ç°­ " << decreaseAmount << " °¨¼Ò]" << endl;
+		cout << "[ì•Œë¦¼] " << name << "ì´(ê°€) ë”ëŸ¬ì›Œì¡ŒìŠµë‹ˆë‹¤! [ê±´ê°• " << decreaseAmount << " ê°ì†Œ]" << endl;
 		break;
 	}
 

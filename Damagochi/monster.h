@@ -4,6 +4,12 @@
 #include <cstdlib>
 using namespace std;
 
+enum Mood {
+	HAPPY,  // 기쁨 (상태 양호)
+	NORMAL, // 보통 (상태 중간)
+	SAD     // 슬픔 (상태 나쁨/위험)
+};
+
 class monster {
 public:
 	string name;
@@ -19,7 +25,11 @@ public:
 	void play(); //게임하기
 	void status();
 
+	Mood currentMood;
+	void UpdateMood();
+
 	//시간 경과에 따라 상태 수치를 감소시킵니다.
+
 	void DecreaseStatus();
 
 	// 몬스터의 생사 여부를 확인합니다.

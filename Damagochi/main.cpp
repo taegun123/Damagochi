@@ -3,9 +3,11 @@
 #include <cstdlib>
 #include <limits>
 #include <chrono>
+#include <ctime>
 #include "monster.h"
 #include "timer.h"
 #include "evolution.h"
+#include "game.h"
 using namespace std;
 
 const long long DECREASE_INTERVAL_MS = 5000;
@@ -14,6 +16,9 @@ const int EVOLUTION_EXP_THRESHOLD = 100;
 void GameLoop(monster* pet);
 
 int main() {
+
+	srand(time(NULL));
+    
     char choice;
 
     cout << "===========================================" << endl;
@@ -36,8 +41,7 @@ int main() {
     cout << "프로그램을 시작하시겠습니까? (Y/N): ";
 
     cin >> choice;
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(10000, '\n');
 
     if (choice == 'y' || choice == 'Y') {
         cout << " 펫의 이름을 지어주세요: ";
@@ -132,11 +136,9 @@ void GameLoop(monster* pet) {
             break;
         case 4:
             cout << "게임을 종료합니다." << endl;
-            delete pet; // 동적 할당된 메모리 해제
             return;
 
-            cout << "\n(계속하려면 Enter 키를 누르세요...)";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(10000, '\n');
             cin.get();
         }
     }
